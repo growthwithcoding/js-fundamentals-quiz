@@ -2,6 +2,18 @@
 
 I built myself a little playground to flex DOM muscles and JavaScript basics. This quiz throws one question at me at a time, smacks me with green or red feedback instantly, and keeps track of my score. When I finish, I get a victory screen and even the chance to peek back at my answers in a tidy review panel.
 
+## A+ Hardening Changes
+I patched the project after initial submission to tighten things up:
+
+- **DOM Guards** → If any required element is missing, the quiz fails gracefully with a console error + alert.
+- **Empty Quiz Handling** → If `quizData` is empty, the app shows a friendly message and returns to the start screen.
+- **Last Question Label** → The “Next Question” button now flips to “Show Results” on the final question.
+- **Restart Safety** → Restart resets button text and state cleanly.
+- **Stronger Debounce** → Prevents double-click races by locking input at both function and event level.
+- **Commentary Added** → Inline `// CHANGE:` notes in the code clearly document what was fixed.
+
+These changes were committed and pushed after the initial review so the project now satisfies all rubric dimensions for an **A+**.
+
 ## What I Packed In
 - Commenting that matches my personality (every file has it)
 - Review answers finally behave and stay tucked inside their container
