@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JavaScript Fundamentals Quiz</title>
+
+  <!-- Style injection station: one clean link, zero chaos -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- START SCREEN: hype zone before the questions -->
+  <section id="start-container" class="card stack">
+    <h1>JavaScript Fundamentals Quiz</h1>
+    <p class="lead">Test your knowledge of variables, arrays, loops, functions, and the DOM. Ready when you are.</p>
+    <div class="row">
+      <button id="start-button" class="btn">Start Quiz</button>
+      <!-- Shuffle =  Spice of life -->
+      <button id="shuffle-toggle" class="btn secondary" aria-pressed="true" title="Toggle random order">Shuffle: On</button>
+    </div>
+  </section>
+
+  <!-- QUIZ SCREEN: one question, multiple chances to shine -->
+  <section id="quiz-container" class="card stack hidden" aria-live="polite" aria-atomic="true">
+    <!-- progress crumbs so users never feel lost -->
+    <div id="progress" class="qmeta">Question <span id="qnum">1</span>/<span id="qtotal">1</span></div>
+    <div id="question-container" class="question">Loading…</div>
+    <div id="options-container" class="options"></div>
+    <div class="footer">
+      <div class="score-pill">Score: <span id="score">0</span></div>
+      <button id="next-button" class="btn" disabled>Next Question</button>
+    </div>
+  </section>
+
+  <!-- SCORE SCREEN: victory lap (or rematch time) -->
+  <section id="score-container" class="card stack hidden">
+    <h1>Results</h1>
+    <p class="lead" id="final-text">You scored 0 out of 0.</p>
+    <div class="row">
+      <button id="restart-button" class="btn">Restart Quiz</button>
+      <button id="review-button" class="btn secondary">Review Answers</button>
+    </div>
+
+    <!-- Review lives here (now fully contained, no spill!) -->
+    <div id="review-panel" class="stack hidden" style="margin-top:10px;"></div>
+  </section>
+
+  <!-- Keep JS separate so we don’t start a fire in here -->
+  <script src="script.js"></script>
+</body>
+</html>

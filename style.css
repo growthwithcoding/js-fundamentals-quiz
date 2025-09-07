@@ -1,0 +1,98 @@
+/* =============================
+   STYLE.CSS
+   - Dark comfy backdrop
+   - Cards with a touch of glass
+   - Big friendly buttons
+   - Obvious feedback (green/red)
+   ============================= */
+:root {
+  --bg: #0f172a;          /* cosmic slate */
+  --panel: #111827;       /* midnight panel */
+  --text: #e5e7eb;        /* moonlight text */
+  --muted: #9ca3af;       /* whisper text */
+  --brand: #22c55e;       /* correct = go green */
+  --wrong: #ef4444;       /* incorrect = stop red */
+  --border: #1f2937;      /* frame the vibes */
+  --btn: #1f2937;         /* button base */
+  --btn-hover: #374151;   /* hover hint */
+  --focus: #93c5fd;       /* friendly focus outline */
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  /* subtle gradient so it doesn’t look like a terminal */
+  background: radial-gradient(1200px 600px at 70% -10%, #1f2937 0%, var(--bg) 40%, var(--bg) 100%);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
+               Noto Sans, Helvetica Neue, Arial;
+  color: var(--text);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+/* card = our little spaceship (top-level size) */
+.card {
+  width: min(720px, 96vw);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  backdrop-filter: blur(6px);
+  transition: transform .2s ease;
+}
+
+h1 { margin: 0 0 12px; font-size: clamp(1.25rem, 1.2rem + 1.2vw, 2rem); }
+.lead { margin: 0 0 20px; color: var(--muted); }
+
+.stack { display: grid; gap: 14px; }
+.hidden { display: none !important; }
+
+/* buttons that say “click me” without yelling */
+.btn {
+  border: 1px solid var(--border);
+  background: var(--btn);
+  color: var(--text);
+  padding: 12px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform .04s ease, background .15s ease;
+}
+.btn:hover { background: var(--btn-hover); }
+.btn:active { transform: translateY(1px); }
+.btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.btn.secondary { background: transparent; }
+
+.row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.question { font-size: 1.125rem; font-weight: 700; margin-bottom: 2px; }
+.qmeta { color: var(--muted); font-size: .95rem; margin-bottom: 12px; }
+
+.options { display: grid; gap: 10px; }
+.option-btn { text-align: left; width: 100%; }
+
+/* instant feedback = instant learning */
+.option-btn.correct { border-color: #14532d; background: rgba(34,197,94,0.12); }
+.option-btn.incorrect { border-color: #7f1d1d; background: rgba(239,68,68,0.12); }
+
+.option-btn[disabled] { opacity: .8; cursor: not-allowed; }
+
+.footer { display: flex; justify-content: space-between; margin-top: 8px; }
+.score-pill { font-weight: 700; color: var(--muted); }
+
+/* little entrance flourish */
+.fade { animation: fade .25s ease; }
+@keyframes fade { from { opacity: 0; transform: translateY(2px);} to { opacity: 1; transform: none; } }
+
+#review-panel { display: grid; gap: 16px; }
+
+/* Only review cards get this override so the top-level card size stays classy */
+#score-container .review-card {
+  width: 100%;        /* fit the parent’s content box */
+  max-width: none;    /* ignore the global min(720px, 96vw) */
+  margin: 0;          /* no extra push */
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25); /* slightly softer than outer card */
+}
