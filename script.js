@@ -40,6 +40,14 @@ const restartBtn = document.getElementById('restart-button');
 const reviewBtn = document.getElementById('review-button');
 const reviewPanel = document.getElementById('review-panel');
 
+// CHANGE: DOM guard — fail gracefully if any required element is missing
+const _requiredEls = [startEl, shuffleToggle, quizEl, qNumEl, qTotalEl, questionEl, optionsEl, nextBtn, scoreEl, scoreScreen, finalText, restartBtn, reviewBtn, reviewPanel];
+if (_requiredEls.some(el => !el)) {
+  console.error('Quiz init aborted: missing DOM elements.');
+  alert('Quiz couldn\'t start because the page is missing required elements.');
+}
+
+
 // Review history so we can show what was picked later
 let askedQuestions = []; // {question, options, answer, picked}
 
@@ -62,6 +70,14 @@ function loadQuestion() {
   qNumEl.textContent = currentIndex + 1;
   qTotalEl.textContent = askedQuestions.length;
 
+  // CHANGE: last-question label logic
+  if (currentIndex === askedQuestions.length - 1) {
+    nextBtn.textContent = 'Show Results';
+  } else {
+    nextBtn.textContent = 'Next Question';
+  }
+
+
   questionEl.textContent = current.question;
   optionsEl.innerHTML = '';
 
@@ -74,7 +90,16 @@ function loadQuestion() {
     optionsEl.appendChild(btn);
   });
 
-  // lil' entrance animation for nice feel
+  
+// CHANGE: global click guard on options to avoid race double-picks
+optionsEl.addEventListener('click', (e) => {
+  if (!accepting) {
+    e.stopPropagation();
+    e.preventDefault();
+  }
+}, true);
+
+// lil' entrance animation for nice feel
   quizEl.classList.add('fade');
   // If last question, change button text to 'Show Results', else 'Next Question'
   if (currentIndex === askedQuestions.length - 1) {
@@ -87,7 +112,7 @@ function loadQuestion() {
 
 // Deal with a pick (and keep it honest)
 function selectOption(selectedIndex, selectedBtn) {
-  if (!accepting) return;   // nope, one pick per question
+  // CHANGE: hard debounceif (!accepting) return;   // nope, one pick per question
   accepting = false;
 
   const current = askedQuestions[currentIndex];
@@ -133,6 +158,19 @@ function showScore() {
 
 // New game smell
 function startQuiz() {
+  // CHANGE: reset button label every run
+  nextBtn.textContent = 'Next Question';
+  
+  // CHANGE: pick order and clone; also handle empty quizData
+  askedQuestions = (randomizeQuestions ? shuffle(quizData) : [...quizData]).map(q => ({ ...q, picked: null }));
+  if (askedQuestions.length === 0) {
+    alert('No questions available. Please add items to quizData and try again.');
+    // Return to start screen so user can adjust settings or reload
+    scoreScreen.classList.add('hidden');
+    startEl.classList.remove('hidden');
+    return;
+  }
+
   // pick the order (random or straight)
   askedQuestions = randomizeQuestions ? shuffle(quizData) : [...quizData];
   // strip old choices so review stays accurate
